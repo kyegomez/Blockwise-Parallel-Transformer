@@ -3,6 +3,8 @@
 
 [Blockwise Parallel Transformer for Long Context Large Models](https://arxiv.org/pdf/2305.19370.pdf)
 
+![Blockwise Paralell Transformer Banner](blockwise-parallel-transformer.png)
+
 This repository contains a PyTorch implementation of the Blockwise Parallel Transformer Attention module, which is a variant of the Transformer Attention mechanism that is designed to handle long sequences more efficiently.
 
 The Blockwise Parallel Transformer Attention module splits the input sequence into blocks and computes the attention output for each block in parallel. This allows the module to handle long sequences more efficiently than the standard Transformer Attention mechanism, which computes the attention output for each position in the sequence sequentially.
@@ -82,3 +84,13 @@ Contributions to this repository are welcome. If you find a bug or have a featur
 
 
 # Parallel Blockwise Class
+
+
+# Share with Friends!
+[Twitter](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fkyegomez%2FBlockwise-Parallel-Transformer&text=Check%20out%20this%20PyTorch%20implementation%20of%20the%20Blockwise%20Parallel%20Transformer%20Attention%20module%20for%20efficiently%20handling%20long%20sequences%20in%20deep%20learning%20models%21%20%23deeplearning%20%23pytorch%20%23machinelearning%20%23github&hashtags=deeplearning%2Cpytorch%2Cmachinelearning%2Cgithub)
+
+[Linkedin](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2Fkyegomez%2FBlockwise-Parallel-Transformer)
+
+[Facebook](https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fgithub.com%2Fkyegomez%2FBlockwise-Parallel-Transformer)
+
+[Whatsapp](https://api.whatsapp.com/send?text=Check%20out%20this%20PyTorch%20implementation%20of%20the%20Blockwise%20Parallel%20Transformer%20Attention%20module%20for%20efficiently%20handling%20long%20sequences%20in%20deep%20learning%20models%21%20https%3A%2F%2Fgithub.com%2Fkyegomez%2FBlockwise-Parallel-Transformer)
