@@ -97,8 +97,10 @@ Contributions to this repository are welcome. If you find a bug or have a featur
 
 
 # Roadmap
-- Pytorch Implementation
+* Pytorch Implementation
 
-- Jax Implementation
+* Reproduce 
 
-- Triton Implementation
+* Jax Implementation
+
+* Triton Implementation
