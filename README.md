@@ -99,7 +99,7 @@ Contributions to this repository are welcome. If you find a bug or have a featur
 # Roadmap
 * Pytorch Implementation
 
-* Reproduce 
+* Reproduce Training and Experiment suite in paper
 
 * Jax Implementation
 
