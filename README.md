@@ -94,3 +94,11 @@ Contributions to this repository are welcome. If you find a bug or have a featur
 [Facebook](https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fgithub.com%2Fkyegomez%2FBlockwise-Parallel-Transformer)
 
 [Whatsapp](https://api.whatsapp.com/send?text=Check%20out%20this%20PyTorch%20implementation%20of%20the%20Blockwise%20Parallel%20Transformer%20Attention%20module%20for%20efficiently%20handling%20long%20sequences%20in%20deep%20learning%20models%21%20https%3A%2F%2Fgithub.com%2Fkyegomez%2FBlockwise-Parallel-Transformer)
+
+
+# Roadmap
+- Pytorch Implementation
+
+- Jax Implementation
+
+- Triton Implementation
