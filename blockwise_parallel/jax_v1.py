@@ -34,19 +34,6 @@ class BlockwiseParallelTransformerAttention:
         bias_chunk = jnp.tile(bias_chunk, (query_chunk_idx.shape[0], 1, 1, 1))
         return bias_chunk
 
-    def BlockParallel(num_blocks=None):
-        def decorator(f):
-            def wrapper(*args, **kwargs):
-                if num_blocks is None:
-                    num_blocks = jax.local_device_count()
-                block_size = args[0].shape[0] // num_blocks
-                blocks = [jax.lax.dynamic_slice_in_dim(args[0], i * block_size, block_size, axis=0) for i in range(num_blocks)]
-                args = [(block,) + args[1:] for block in blocks]
-                outputs = jax.pmap(f)(*args, **kwargs)
-                return jnp.concatenate(outputs, axis=0)
-            return wrapper
-        return decorator
-
     def _query_block(self, input_chunk, query_chunk_idx):
         query_chunk = self.query_blocks(input_chunk)
         query_chunk = query_chunk / jnp.sqrt(query_chunk.shape[-1])
@@ -251,3 +238,15 @@ class BlockwiseParallelTransformerAttention:
         
 
         
+    # def BlockParallel(num_blocks=None):
+    #     def decorator(f):
+    #         def wrapper(*args, **kwargs):
+    #             if num_blocks is None:
+    #                 num_blocks = jax.local_device_count()
+    #             block_size = args[0].shape[0] // num_blocks
+    #             blocks = [jax.lax.dynamic_slice_in_dim(args[0], i * block_size, block_size, axis=0) for i in range(num_blocks)]
+    #             args = [(block,) + args[1:] for block in blocks]
+    #             outputs = jax.pmap(f)(*args, **kwargs)
+    #             return jnp.concatenate(outputs, axis=0)
+    #         return wrapper
+    #     return decorator
