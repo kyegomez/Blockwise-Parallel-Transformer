@@ -1,8 +1,6 @@
-import jax 
-import jax.numpy as jnp
 from jax import random
 from blockwise_parallel import BlockwiseParallelTransformerAttention
-
+from torch.nn import Embedding
 
 
 #hyperparams

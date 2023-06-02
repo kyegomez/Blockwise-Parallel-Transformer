@@ -1,6 +1,7 @@
 import jax
 import jax.numpy as jnp
 from jax import nn, lax
+from jax.experimental.stax import Dense
 
 class BlockwiseParallelTransformerAttention:
     def __init__(self, input_size, num_heads, hidden_size, num_layers, max_seq_len, block_size):
@@ -20,10 +21,10 @@ class BlockwiseParallelTransformerAttention:
         self.query_position_ids = jnp.arange(max_seq_len)
         self.key_value_position_ids = jnp.arange(max_seq_len)
 
-        self.query_blocks = nn.Dense(hidden_size, name='query')
-        self.key_blocks = nn.Dense(hidden_size, name='key')
-        self.value_blocks = nn.Dense(hidden_size, name='value')
-        self.feedforward = nn.Dense(hidden_size, name='feedforward')
+        self.query_blocks = Dense(hidden_size, name='query')
+        self.key_blocks = Dense(hidden_size, name='key')
+        self.value_blocks = Dense(hidden_size, name='value')
+        self.feedforward = Dense(hidden_size, name='feedforward')
 
     def _chunk_bias_fn(self, query_chunk_idx, key_chunk_idx):
         start = key_chunk_idx * self.key_value_chunk_size
@@ -101,6 +102,69 @@ class BlockwiseParallelTransformerAttention:
     
     
     
+
+
+
+
+# import jax
+# import jax.numpy as jnp
+# from jax.experimental import stax
+
+# class BlockwiseParallelTransformerAttention(nn.Module):
+#     def __init__(self, input_size, num_heads, hidden_size, num_layers, max_seq_len, block_size):
+#         super(BlockwiseParallelTransformerAttention, self).__init__()
+#         self.input_size = input_size
+#         self.num_heads = num_heads
+#         self.hidden_size = hidden_size
+#         self.num_layers = num_layers
+#         self.max_seq_len = max_seq_len
+#         self.block_size = block_size
+        
+#         self.query_blocks = stax.Dense(hidden_size, W_init=jax.nn.initializers.glorot_normal())
+#         self.key_blocks = stax.Dense(hidden_size, W_init=jax.nn.initializers.glorot_normal())
+#         self.value_blocks = stax.Dense(hidden_size, W_init=jax.nn.initializers.glorot_normal())
+#         self.feedforward = nn.Sequential(
+#             stax.Dense(hidden_size, W_init=jax.nn.initializers.glorot_normal()),
+#             nn.ReLU(),
+#             stax.Dense(num_heads * hidden_size, W_init=jax.nn.initializers.glorot_normal())
+#         )
+#         self.layer_norm1 = nn.LayerNorm(input_size)
+#         self.layer_norm2 = nn.LayerNorm(num_heads * hidden_size)
+        
+#     def forward(self, x):
+#         batch_size, seq_len, input_size = x.shape
+#         num_blocks = seq_len // self.block_size
+#         query_blocks = x[:, :num_blocks*self.block_size, :].reshape(batch_size, num_blocks, self.block_size, input_size)
+#         key_value_blocks = x[:, :num_blocks*self.block_size, :].reshape(batch_size, num_blocks, self.block_size, input_size)
+        
+#         for i in range(self.num_layers):
+#             query = self.query_blocks(query_blocks.reshape(batch_size*num_blocks, self.block_size, input_size))
+#             key = self.key_blocks(key_value_blocks.reshape(batch_size*num_blocks, self.block_size, input_size))
+#             value = self.value_blocks(key_value_blocks.reshape(batch_size*num_blocks, self.block_size, input_size))
+            
+#             query = query.reshape(batch_size, num_blocks, self.block_size, self.num_heads, self.hidden_size).transpose((0, 3, 1, 2, 4))
+#             key = key.reshape(batch_size, num_blocks, self.block_size, self.num_heads, self.hidden_size).transpose((0, 3, 1, 2, 4))
+#             value = value.reshape(batch_size, num_blocks, self.block_size, self.num_heads, self.hidden_size).transpose((0, 3, 1, 2, 4))
+            
+#             attention_scores = jnp.matmul(query, key.transpose((0, 1, 2, 4, 3))) / jnp.sqrt(jnp.array(self.hidden_size, dtype=jnp.float32))
+#             attention_weights = nn.functional.softmax(attention_scores, dim=-1)
+#             attention_output = jnp.matmul(attention_weights, value)
+#             attention_output = attention_output.transpose((0, 2, 3, 1, 4)).reshape(batch_size*num_blocks, self.block_size, self.num_heads*self.hidden_size)
+#             attention_output = self.feedforward(attention_output)
+#             attention_output = attention_output.reshape(batch_size, num_blocks, self.block_size, self.num_heads, self.hidden_size).transpose((0, 2, 1, 3, 4)).reshape(batch_size, seq_len, self.num_heads*self.hidden_size)
+#             attention_output = self.layer_norm1(query_blocks + attention_output)
+#             attention_output = self.layer_norm2(attention_output)
+            
+#         return attention_output
+
+
+
+
+
+
+
+
+
     
     
     
@@ -249,4 +313,54 @@ class BlockwiseParallelTransformerAttention:
     #             outputs = jax.pmap(f)(*args, **kwargs)
     #             return jnp.concatenate(outputs, axis=0)
     #         return wrapper
-    #     return decorator
+#     #     return decorator
+#     import jax
+# import jax.numpy as jnp
+# from jax.experimental import stax
+
+# class BlockwiseParallelTransformerAttention(nn.Module):
+#     def __init__(self, input_size, num_heads, hidden_size, num_layers, max_seq_len, block_size):
+#         super(BlockwiseParallelTransformerAttention, self).__init__()
+#         self.input_size = input_size
+#         self.num_heads = num_heads
+#         self.hidden_size = hidden_size
+#         self.num_layers = num_layers
+#         self.max_seq_len = max_seq_len
+#         self.block_size = block_size
+        
+#         self.query_blocks = stax.Dense(hidden_size, W_init=jax.nn.initializers.glorot_normal())
+#         self.key_blocks = stax.Dense(hidden_size, W_init=jax.nn.initializers.glorot_normal())
+#         self.value_blocks = stax.Dense(hidden_size, W_init=jax.nn.initializers.glorot_normal())
+#         self.feedforward = nn.Sequential(
+#             stax.Dense(hidden_size, W_init=jax.nn.initializers.glorot_normal()),
+#             nn.ReLU(),
+#             stax.Dense(num_heads * hidden_size, W_init=jax.nn.initializers.glorot_normal())
+#         )
+#         self.layer_norm1 = nn.LayerNorm(input_size)
+#         self.layer_norm2 = nn.LayerNorm(num_heads * hidden_size)
+        
+#     def forward(self, x):
+#         batch_size, seq_len, input_size = x.shape
+#         num_blocks = seq_len // self.block_size
+#         query_blocks = x[:, :num_blocks*self.block_size, :].reshape(batch_size, num_blocks, self.block_size, input_size)
+#         key_value_blocks = x[:, :num_blocks*self.block_size, :].reshape(batch_size, num_blocks, self.block_size, input_size)
+        
+#         for i in range(self.num_layers):
+#             query = self.query_blocks(query_blocks.reshape(batch_size*num_blocks, self.block_size, input_size))
+#             key = self.key_blocks(key_value_blocks.reshape(batch_size*num_blocks, self.block_size, input_size))
+#             value = self.value_blocks(key_value_blocks.reshape(batch_size*num_blocks, self.block_size, input_size))
+            
+#             query = query.reshape(batch_size, num_blocks, self.block_size, self.num_heads, self.hidden_size).transpose((0, 3, 1, 2, 4))
+#             key = key.reshape(batch_size, num_blocks, self.block_size, self.num_heads, self.hidden_size).transpose((0, 3, 1, 2, 4))
+#             value = value.reshape(batch_size, num_blocks, self.block_size, self.num_heads, self.hidden_size).transpose((0, 3, 1, 2, 4))
+            
+#             attention_scores = jnp.matmul(query, key.transpose((0, 1, 2, 4, 3))) / jnp.sqrt(jnp.array(self.hidden_size, dtype=jnp.float32))
+#             attention_weights = nn.functional.softmax(attention_scores, dim=-1)
+#             attention_output = jnp.matmul(attention_weights, value)
+#             attention_output = attention_output.transpose((0, 2, 3, 1, 4)).reshape(batch_size*num_blocks, self.block_size, self.num_heads*self.hidden_size)
+#             attention_output = self.feedforward(attention_output)
+#             attention_output = attention_output.reshape(batch_size, num_blocks, self.block_size, self.num_heads, self.hidden_size).transpose((0, 2, 1, 3, 4)).reshape(batch_size, seq_len, self.num_heads*self.hidden_size)
+#             attention_output = self.layer_norm1(query_blocks + attention_output)
+#             attention_output = self.layer_norm2(attention_output)
+            
+#         return attention_output
