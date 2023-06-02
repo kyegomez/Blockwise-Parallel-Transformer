@@ -52,3 +52,27 @@ class BlockwiseParallelTransformerAttention(nn.Module):
             query_blocks = self.layer_norm2(query_blocks.view(batch_size, num_blocks*self.block_size, self.num_heads*self.hidden_size)).view(batch_size, num_blocks, self.block_size, self.num_heads*self.hidden_size)
             
         return query_blocks.view(batch_size, seq_len, self.num_heads*self.hidden_size)
+    
+
+#inpout sequence
+batch_size = 2
+seq_len = 1024
+input_size = 512
+x = torch.randn(batch_size, seq_len, input_size)
+
+
+#define params
+num_heads = 8
+hidden_size = 512
+num_layers = 6
+max_seq_len = 1024
+block_size = 64
+
+#crete an instance of blockwise paralel
+model = BlockwiseParallelTransformerAttention(input_size, num_heads, hidden_size, num_layers, max_seq_len, block_size)
+
+
+#pass the input sequence to the module to get the output
+output = model(x)
+
+print(output.shape)
