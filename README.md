@@ -5,10 +5,18 @@
 
 ![Blockwise Paralell Transformer Banner](blockwise-parallel-transformer.png)
 
-This repository contains a PyTorch implementation of the Blockwise Parallel Transformer Attention module, which is a variant of the Transformer Attention mechanism that is designed to handle long sequences more efficiently.
+This repository contains a PyTorch and jax implementation of the Blockwise Parallel Transformer Attention module, which is a variant of the Transformer Attention mechanism that is designed to handle long sequences more efficiently.
 
 The Blockwise Parallel Transformer Attention module splits the input sequence into blocks and computes the attention output for each block in parallel. This allows the module to handle long sequences more efficiently than the standard Transformer Attention mechanism, which computes the attention output for each position in the sequence sequentially.
 
+
+# Epochs
+
+### Jax
+
+### Pytorch
+
+### Triton??
 
 # Agora
 This implementation of BlockWise Parallel Transformer is brought to you by Agora, we're devoted to advancing Humanity with open source Multi-Modality AI Research!
@@ -19,7 +27,7 @@ This implementation of BlockWise Parallel Transformer is brought to you by Agora
 # Usage
 To use the Blockwise Parallel Transformer Attention module in your PyTorch project, follow these steps:
 
-Method 1
+Method 1 
 ## Clone the repository:
 
 `git clone https://github.com/kyegomez/Blockwise-Parallel-Transformer.git`
